@@ -64,10 +64,9 @@ class Handler extends ExceptionHandler
                 }
                 elseif ($e instanceof QueryException)
                     $resource = GlobalHelper::getResourceError('errors.database_error');
-                
-                $error_message = $resource['message'];
-                $error_code = $resource['code'];
-                $http_status_code = $resource['status_code'];
+                    $error_message = $resource['message'];
+                    $error_code = $resource['code'];
+                    $http_status_code = $resource['status_code'];
             }
             return Response::error($error_message, $error_code, $http_status_code, $e);
         });

@@ -3,14 +3,14 @@
 namespace App\Http\Requests;
 
 use Illuminate\Contracts\Validation\ValidationRule;
+use Illuminate\Validation\ValidationException;
 use Illuminate\Foundation\Http\FormRequest;
-
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Symfony\Component\HttpFoundation\Response;
 use App\Exceptions\ApplicationException;
 
-class UserStoreRequest extends FormRequest
+class SuplierUpdateRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -28,11 +28,13 @@ class UserStoreRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'username' => ['required'],
-            'fullname' => ['required'],
-            'email' => ['required','email','unique:users,email'],
-            'password' => ['required'],
-            'c_password' => ['required','same:password'],
+            'supplier_code' => ['required'],
+            // 'supplier_code' => ['required','unique:supliers,supplier_code,'.$this->suplier->id],
+            'name' => ['required'],
+            'address' => ['required'],
+            'pic' => ['required'],
+            'phone_number' => ['required','integer'],
+            'npwp' => ['required','digits:16'],
         ];
     }
 
@@ -44,7 +46,5 @@ class UserStoreRequest extends FormRequest
             'message' => $validator->errors()->first(),
             'data'    => $validator->errors()->toArray(),
         ]), Response::HTTP_UNPROCESSABLE_ENTITY));
-        
-
     }
 }

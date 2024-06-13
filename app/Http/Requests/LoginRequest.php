@@ -8,9 +8,11 @@ use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Symfony\Component\HttpFoundation\Response;
+
 use App\Exceptions\ApplicationException;
 
-class UserStoreRequest extends FormRequest
+
+class LoginRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -28,11 +30,8 @@ class UserStoreRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'username' => ['required'],
-            'fullname' => ['required'],
-            'email' => ['required','email','unique:users,email'],
-            'password' => ['required'],
-            'c_password' => ['required','same:password'],
+            'email'     => ['required','email'],
+            'password'  => ['required']
         ];
     }
 
@@ -44,7 +43,6 @@ class UserStoreRequest extends FormRequest
             'message' => $validator->errors()->first(),
             'data'    => $validator->errors()->toArray(),
         ]), Response::HTTP_UNPROCESSABLE_ENTITY));
-        
 
     }
 }
