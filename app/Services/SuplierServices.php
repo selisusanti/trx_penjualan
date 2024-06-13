@@ -19,6 +19,11 @@ class SuplierServices implements SuplierServicesImpl{
          return $save;
       }
 
+      public function detail($id){
+         $save               = Suplier::findOrFail($id);
+         return $save;
+      }
+
       public function update($request, $id){
          $suplier      = Suplier::where('id',$id)->first();
          if (empty($suplier)){

@@ -23,6 +23,7 @@ Route::middleware('auth:sanctum')->group( function () {
 
     Route::prefix('supliers')->group(function(){
         Route::get('/', [SuplierController::class, 'index']);
+        Route::get('/{supliers}', [SuplierController::class, 'detail']);
         Route::post('/', [SuplierController::class, 'store']);
         Route::put('/{supliers}', [SuplierController::class, 'update']);
         Route::delete('/{supliers}', [SuplierController::class, 'delete']);

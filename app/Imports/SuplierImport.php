@@ -11,7 +11,7 @@ use Maatwebsite\Excel\Concerns\ToArray;
 
 class SuplierImport implements ToArray
 {
-    public function array(array $array): void
+    public function array(array $array)
     {
         $rowNumber = 0;
         $success = 0;
@@ -26,7 +26,7 @@ class SuplierImport implements ToArray
                     continue;
                 }
                 Log::info($row[0]);
-                Suplier::create([
+                $suplier = Suplier::create([
                     'supplier_code'=> $row[1],
                     'name'=> $row[0],
                     'address'=> $row[2],
@@ -34,11 +34,31 @@ class SuplierImport implements ToArray
                     'phone_number'=> $row[4],
                     'npwp'=> $row[5],
                 ]); 
+                
+                if ($suplier) {
+                    $success++;
+                } else {
+                    $failure++;
+                }
             }
         } catch (Exception $exception) {
             Log::error($exception);
             // Log::error($exception->getMessage());
         }
+        
+        $this->result = [
+            'success'   => $success,
+            'fail'      => $failure
+        ];
     }
 
+    public function chunkSize(): int
+    {
+        return 300;
+    }
+
+    public function getResult()
+    {
+        return $this->result;
+    }
 }

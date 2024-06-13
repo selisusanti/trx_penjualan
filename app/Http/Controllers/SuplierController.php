@@ -30,6 +30,17 @@ class SuplierController extends Controller
 
     }
 
+    public function detail($id)
+    {
+        DB::beginTransaction();
+        try {
+            $user               = $this->suplierServices->detail($id);
+            return Response::success($user,'Sukses get detail data');
+        } catch (Exception $e) {
+            throw new ApplicationException("user.failure_save_user");
+        }
+    }
+
     public function store(SuplierSaveRequest $request)
     {
 
@@ -81,7 +92,7 @@ class SuplierController extends Controller
     {
         try {
             $save = Excel::import(new SuplierImport,$request->file('file'));
-            return Response::success($save->getResult());
+            return Response::success($save,'Import Data Success');
         } catch (\Maatwebsite\Excel\Validators\ValidationException $e) {
             $failures = $e->failures();
             return Response::error($failures);
