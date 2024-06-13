@@ -11,7 +11,7 @@ use App\Services\SuplierServices;
 use App\Exceptions\ApplicationException;
 use App\Models\Suplier;
 use Maatwebsite\Excel\Facades\Excel;
-use App\Imports\ImportSuplier;
+use App\Imports\SuplierImport;
 use DB;
 
 class SuplierController extends Controller
@@ -79,13 +79,12 @@ class SuplierController extends Controller
 
     public function import(ImportSuplierRequest $request)
     {
-        $import = Excel::import(new ImportSuplier, $request->file('file'));
-        dd($import);
         try {
-            $import = Excel::import(new ImportSuplier, $request->file('file'));
-            return Response::success($import,'Sukses import data');
-        } catch (Exception $exception) {
-            throw new ApplicationException("user.failure_import_user");
+            $save = Excel::import(new SuplierImport,$request->file('file'));
+            return Response::success($save->getResult());
+        } catch (\Maatwebsite\Excel\Validators\ValidationException $e) {
+            $failures = $e->failures();
+            return Response::error($failures);
         }
     }
 

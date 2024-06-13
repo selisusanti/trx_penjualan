@@ -30,7 +30,7 @@ class SuplierServices implements SuplierServicesImpl{
                'address'=> $request->address,
                'pic'=> $request->pic,
                'phone_number'=> $request->phone_number,
-               'pic'=> $request->npwp,
+               'npwp'=> $request->npwp,
             ]); 
             return Suplier::findOrFail($id);
          }
