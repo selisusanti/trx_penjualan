@@ -18,7 +18,7 @@ return new class extends Migration
             $table->text('description')->nullable();
             $table->decimal('price', 10, 0)->default(0);
             $table->integer('stock')->default(0);
-            $table->text('picture');
+            $table->text('picture')->nullable();
             $table->unsignedBigInteger('insert_by')->nullable();
             $table->foreign('insert_by', 'product_insert_by')
                   ->references('id')

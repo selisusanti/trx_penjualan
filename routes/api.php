@@ -19,12 +19,20 @@ use App\Http\Controllers\SuplierController;
 
 
 Route::middleware('auth:sanctum')->group( function () {
-    Route::get('products', [ProductController::class, 'store']);
+
+    Route::prefix('products')->group(function(){
+        Route::get('/', [ProductController::class, 'index']);
+        Route::post('/', [ProductController::class, 'store']);
+        Route::get('/{products}', [ProductController::class, 'detail']);
+        Route::put('/{products}', [ProductController::class, 'update']);
+        Route::delete('/{products}', [ProductController::class, 'delete']);
+        Route::post('/import', [ProductController::class, 'import']);
+    });
 
     Route::prefix('supliers')->group(function(){
         Route::get('/', [SuplierController::class, 'index']);
-        Route::get('/{supliers}', [SuplierController::class, 'detail']);
         Route::post('/', [SuplierController::class, 'store']);
+        Route::get('/{supliers}', [SuplierController::class, 'detail']);
         Route::put('/{supliers}', [SuplierController::class, 'update']);
         Route::delete('/{supliers}', [SuplierController::class, 'delete']);
         Route::post('/import', [SuplierController::class, 'import']);

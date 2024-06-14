@@ -22,13 +22,14 @@ class Product extends Model
         'suplier_id',
     ];
     
-    public function insert_by(): BelongTo
-    {
-        return $this->belongsTo(User::class);
-    }
+	public function insert_by()
+	{
+		return $this->belongsTo(User::class, 'insert_by');
+	}
 
-    // public function suplier_id(): BelongTo
-    // {
-    //     return $this->belongsTo(Suplier::class);
-    // }
+	public function suplier()
+	{
+		return $this->belongsTo(Suplier::class, 'suplier_id');
+	}
+    
 }
