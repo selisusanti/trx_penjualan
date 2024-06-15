@@ -65,4 +65,12 @@ return [
         'code'          => 40005,
         'status_code'   => 422,
         'message'       => "Version did not set correctly."],
+    'stock_not_enough' => [
+        'code'          => 40006,
+        'status_code'   => 422,
+        'message'       => "Stok :entity dengan id :id tidak cukup."],
+    'gagal_save_penjualan' => [
+        'code'          => 40007,
+        'status_code'   => 422,
+        'message'       => "Simpan Data Penjualan Gagal"],
 ];

@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\SuplierController;
+use App\Http\Controllers\TransaksiController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -37,6 +38,12 @@ Route::middleware('auth:sanctum')->group( function () {
         Route::delete('/{supliers}', [SuplierController::class, 'delete']);
         Route::post('/import', [SuplierController::class, 'import']);
     });
+
+    Route::prefix('transaksi')->group(function(){
+        Route::get('/', [TransaksiController::class, 'index']);
+        Route::post('/', [TransaksiController::class, 'penjualan']);
+    });
+
 });
 
 Route::controller(AuthController::class)->group(function(){

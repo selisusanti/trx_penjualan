@@ -34,6 +34,7 @@ class ProductImport implements ToArray
                     'stock'=> $row[4],
                     'picture'=> $row[5] ?? '',
                     'suplier_id'=> $row[6],
+                    'insert_by'=> auth()->user()->id,
                 ]); 
                 
                 if ($product) {
