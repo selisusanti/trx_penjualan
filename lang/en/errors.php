@@ -73,4 +73,8 @@ return [
         'code'          => 40007,
         'status_code'   => 422,
         'message'       => "Simpan Data Penjualan Gagal"],
+    'delete_product' => [
+        'code'          => 40008,
+        'status_code'   => 422,
+        'message'       => "Entity :entity with id :id tidak dapat dihapus. karena sudah digunakan untuk transaksi"],
 ];

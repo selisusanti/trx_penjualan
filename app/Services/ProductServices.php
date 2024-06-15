@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Services\Implemen\ProductServicesImpl;
 use App\Exceptions\ApplicationException;
 use App\Models\Product;
+use App\Models\Transaction;
 
 
 class ProductServices implements ProductServicesImpl{
@@ -52,6 +53,12 @@ class ProductServices implements ProductServicesImpl{
     }
 
     public function delete($id){
+        $transaction  = Transaction::where('product_id',$id)
+                        ->first();
+        if(!empty($transaction)){
+            throw new ApplicationException("errors.delete_product", ['entity' => 'Product', 'id' => $id]);
+        }
+
         $Product      = Product::where('id',$id)->first();
         if (empty($Product)){
             throw new ApplicationException("errors.entity_not_found", ['entity' => 'Product', 'id' => $id]);
