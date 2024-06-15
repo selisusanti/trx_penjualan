@@ -42,6 +42,7 @@ Route::middleware('auth:sanctum')->group( function () {
     Route::prefix('transaksi')->group(function(){
         Route::get('/', [TransaksiController::class, 'index']);
         Route::post('/', [TransaksiController::class, 'penjualan']);
+        Route::post('/download', [TransaksiController::class, 'download']);
     });
 
 });

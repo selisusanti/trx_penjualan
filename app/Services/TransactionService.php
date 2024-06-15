@@ -6,14 +6,21 @@ use App\Services\Implemen\TransactionServiceImpl;
 use App\Exceptions\ApplicationException;
 use App\Models\Transaction;
 use App\Models\Product;
+use App\Http\Helpers\EventLog;
 use DB;
 
 
 class TransactionService implements TransactionServiceImpl{
 
-
-    public function index(){
-        $data = Transaction::query()->with(['product'])->paginate();
+    public function index($tanggal,$product){
+        $data = Transaction::query()
+                ->with(['product'])
+                ->when($tanggal, function ($q) use ($tanggal) {
+                    $q->where('transaction_date', $tanggal);
+                })
+                ->when($product, function ($q) use ($product) {
+                    $q->where('product_id', $product);
+                })->paginate();
         return $data;
     }
 
@@ -39,6 +46,13 @@ class TransactionService implements TransactionServiceImpl{
                     'users_id'=> auth()->user()->id,
                     'transaction_date'=> now(),
                 ]);
+
+
+                $dataraw = '';
+                $reason  = 'Transaksi penjualan';
+                $trxid   = $save->id;
+                $model   = 'penjualan';
+                EventLog::insertLog($trxid, $reason, $dataraw,$model);
                 DB::commit();
                 return $save;
             } catch (Exception $e) {
@@ -47,5 +61,20 @@ class TransactionService implements TransactionServiceImpl{
             }
 
         }
+    }
+
+    public function report($request){
+        $tanggal            = $request['tanggal_transaksi'];
+        $product            = $request['product_id'];
+        $data = Transaction::query()
+                ->with(['product'])
+                ->when($tanggal, function ($q) use ($tanggal) {
+                    $q->where('transaction_date', $tanggal);
+                })
+                ->when($product, function ($q) use ($product) {
+                    $q->where('product_id', $product);
+                })
+                ->get();
+        return $data;
     }
 }
