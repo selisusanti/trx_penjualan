@@ -43,13 +43,13 @@ class AuthController extends Controller
     {
 
         if(Auth::attempt(['email' => $request->email, 'password' => $request->password])){ 
-            $user = Auth::user(); 
+            $user             = Auth::user(); 
             $success['token'] =  $user->createToken('MyApp')->plainTextToken; 
             $success['name']  =  $user;
             return Response::success($success,'Login Success');
         } 
         else{ 
-            return Response::error('Check Email dan Password!');
+            throw new ApplicationException("Check password dan email !");
         } 
 
     }

@@ -6,6 +6,7 @@ use App\Services\Implemen\ProductServicesImpl;
 use App\Exceptions\ApplicationException;
 use App\Models\Product;
 use App\Models\Transaction;
+use Illuminate\Support\Facades\Storage;
 
 
 class ProductServices implements ProductServicesImpl{
@@ -16,16 +17,25 @@ class ProductServices implements ProductServicesImpl{
     }
 
     public function save($input){
+
+        if($input->hasFile('picture'))
+        {
+            $path = Storage::putFile("/public/images/produk", $input->file('picture'));
+        }else{
+            $path = "";
+        }
+
         $save               = Product::create([
             'code'=> $input['code'],
             'product_name'=> $input['product_name'],
             'description'=> $input['description'],
             'price'=> $input['price'],
             'stock'=> $input['stock'],
-            'picture'=> $input['picture'] ?? '',
+            'picture'=> $path,
             'insert_by'=> auth()->user()->id,
             'suplier_id'=> $input['suplier_id'],
         ]);
+
         return $save;
     }
 
@@ -39,13 +49,19 @@ class ProductServices implements ProductServicesImpl{
         if (empty($Product)){
             throw new ApplicationException("errors.entity_not_found", ['entity' => 'Product', 'id' => $id]);
         }else{
+            if($request->hasFile('picture'))
+            {
+                $path = Storage::putFile("/public/images/produk", $request->file('picture'));
+                $Product->update([
+                    'picture'=> $path,
+                ]); 
+            }
             $update_user = $Product->update([
                 'code'=> $request['code'],
                 'product_name'=> $request['product_name'],
                 'description'=> $request['description'],
                 'price'=> $request['price'],
                 'stock'=> $request['stock'],
-                'picture'=> $request['picture'] ?? '',
                 'suplier_id'=> $request['suplier_id'],
             ]); 
             return Product::with(['insert_by','suplier'])->findOrFail($id);

@@ -33,7 +33,7 @@ class ProductUpdateRequest extends FormRequest
             'description' => ['required'],
             'price' => ['required','integer'],
             'stock' => ['required','integer'],
-            'picture' => ['image', 'max:2048'],
+            'picture' => ['nullable','image', 'mimes:jpeg,png,jpg', 'max:2048'],
             'suplier_id' => ['required','exists:supliers,id'],
         ];
     }

@@ -35,8 +35,7 @@ class ProductController extends Controller
 
         DB::beginTransaction();
         try {
-            $input              = $request->all();
-            $user               = $this->productServices->save($input);
+            $user               = $this->productServices->save($request);
             DB::commit();
             return Response::success($user,'Sukses Simpan Data');
         } catch (Exception $e) {

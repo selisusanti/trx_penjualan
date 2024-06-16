@@ -77,4 +77,8 @@ return [
         'code'          => 40008,
         'status_code'   => 422,
         'message'       => "Entity :entity with id :id tidak dapat dihapus. karena sudah digunakan untuk transaksi"],
+    'pesan_error' => [
+        'code'          => 40009,
+        'status_code'   => 422,
+        'message'       => ":pesan"],
 ];
