@@ -10,7 +10,7 @@ use App\Models\Suplier;
 class SuplierServices implements SuplierServicesImpl{
 
       public function index(){
-         $data = Suplier::query()->paginate();
+         $data = Suplier::query()->paginate($perPage = 10);
          return $data;
       }
 

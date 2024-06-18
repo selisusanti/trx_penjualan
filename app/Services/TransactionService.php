@@ -14,13 +14,14 @@ class TransactionService implements TransactionServiceImpl{
 
     public function index($tanggal,$product){
         $data = Transaction::query()
-                ->with(['product'])
+                ->with(['product','users'])
                 ->when($tanggal, function ($q) use ($tanggal) {
                     $q->where('transaction_date', $tanggal);
                 })
                 ->when($product, function ($q) use ($product) {
                     $q->where('product_id', $product);
-                })->paginate();
+                })
+                ->paginate($perPage = 10);
         return $data;
     }
 

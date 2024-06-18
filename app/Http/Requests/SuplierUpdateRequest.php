@@ -33,7 +33,7 @@ class SuplierUpdateRequest extends FormRequest
             'name' => ['required'],
             'address' => ['required'],
             'pic' => ['required'],
-            'phone_number' => ['required','integer'],
+            'phone_number' => ['required'],
             'npwp' => ['required','digits:16'],
         ];
     }

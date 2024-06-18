@@ -12,17 +12,17 @@ use Illuminate\Support\Facades\Storage;
 class ProductServices implements ProductServicesImpl{
 
     public function index(){
-        $data = Product::query()->paginate();
+        $data = Product::query()->with(['insert_by','suplier'])->paginate($perPage = 10);
         return $data;
     }
 
     public function save($input){
-
         if($input->hasFile('picture'))
         {
-            $path = Storage::putFile("/public/images/produk", $input->file('picture'));
+            $path    = Storage::putFile("public/images/produk", $input->file('picture'));
+            $img_url = Storage::url($path);
         }else{
-            $path = "";
+            $img_url = "";
         }
 
         $save               = Product::create([
@@ -31,7 +31,7 @@ class ProductServices implements ProductServicesImpl{
             'description'=> $input['description'],
             'price'=> $input['price'],
             'stock'=> $input['stock'],
-            'picture'=> $path,
+            'picture'=> $img_url,
             'insert_by'=> auth()->user()->id,
             'suplier_id'=> $input['suplier_id'],
         ]);
@@ -51,11 +51,14 @@ class ProductServices implements ProductServicesImpl{
         }else{
             if($request->hasFile('picture'))
             {
-                $path = Storage::putFile("/public/images/produk", $request->file('picture'));
+                $path = Storage::putFile("public/images/produk", $request->file('picture'));
+                $img_url = Storage::url($path);
+
                 $Product->update([
-                    'picture'=> $path,
+                    'picture'=> $img_url,
                 ]); 
             }
+
             $update_user = $Product->update([
                 'code'=> $request['code'],
                 'product_name'=> $request['product_name'],
